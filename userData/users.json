@@ -1,0 +1,17 @@
+{
+  "users": [
+    {
+      "id": "11111111",
+      "nombre": "God",
+      "username": "No tiene",
+      "isBot": false,
+      "allowed": true
+    },
+    {
+      "id": "222222",
+      "nombre": "Aroha",
+      "username": "No tiene",
+      "isBot": false
+    }
+  ]
+}

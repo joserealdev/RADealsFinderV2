@@ -1,0 +1,27 @@
+{
+  "111111": [
+    {
+      "from": "MAD",
+      "destination": "MLA",
+      "dateInterval": ["2020-02-22", "2020-08-22"],
+      "duration": [1, 7],
+      "budget": 100
+    },
+    {
+      "from": "MAD",
+      "destination": "STN",
+      "dateInterval": ["2020-02-22", "2020-08-22"],
+      "duration": [1, 7],
+      "budget": 100
+    }
+  ],
+  "222222": [
+    {
+      "from": "MAD",
+      "destination": "VIE",
+      "dateInterval": ["2020-02-22", "2020-08-22"],
+      "duration": [1, 7],
+      "budget": 100
+    }
+  ]
+}

@@ -18,6 +18,7 @@
   "homepage": "https://github.com/joserealdev/RADealsFinderV2#readme",
   "dependencies": {
     "fs": "0.0.1-security",
+    "lodash.get": "^4.4.2",
     "node-cron": "^2.0.3",
     "node-telegram-bot-api": "^0.30.0",
     "querystring": "^0.2.0",
