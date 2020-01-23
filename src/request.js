@@ -1,5 +1,5 @@
 const request = require("request");
-const { API } = require("../data/static.json");
+const { API } = require("../data/properties.json");
 
 const checkFlight = ({ from, destination, dateInterval, duration }) => {
   return new Promise((resolve, reject) => {

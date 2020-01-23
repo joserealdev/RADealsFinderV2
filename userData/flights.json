@@ -2,17 +2,11 @@
   "111111": [
     {
       "from": "MAD",
-      "destination": "MLA",
-      "dateInterval": ["2020-02-22", "2020-08-22"],
-      "duration": [1, 7],
-      "budget": 100
-    },
-    {
-      "from": "MAD",
-      "destination": "STN",
-      "dateInterval": ["2020-02-22", "2020-08-22"],
-      "duration": [1, 7],
-      "budget": 100
+      "destination": "",
+      "dateInterval": ["2020-01-23", "2020-01-23"],
+      "notDestinations": ["españa", "marruecos", "portugal"],
+      "searchForAWeekend": true,
+      "budget": 50
     }
   ],
   "222222": [
