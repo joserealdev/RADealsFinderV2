@@ -1,5 +1,5 @@
 {
-  "111111": [
+  "6444312": [
     {
       "from": "MAD",
       "destination": "",
@@ -7,6 +7,13 @@
       "notDestinations": ["españa", "marruecos", "portugal"],
       "searchForAWeekend": true,
       "budget": 50
+    },
+    {
+      "from": "SVQ",
+      "destination": "VIE",
+      "dateInterval": ["2020-02-22", "2020-08-22"],
+      "duration": [1, 7],
+      "budget": 100
     }
   ],
   "222222": [

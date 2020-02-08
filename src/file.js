@@ -9,7 +9,18 @@ const readFile = id => {
 };
 const writeFile = () => {};
 
+const writeTest = data => {
+  try {
+    fs.writeFileSync("./test.json", JSON.stringify(data, null, 2));
+  } catch (error) {
+    return {
+      e: "Fallo al insertar: " + error
+    };
+  }
+};
+
 module.exports = {
   readFile,
-  writeFile
+  writeFile,
+  writeTest
 };
