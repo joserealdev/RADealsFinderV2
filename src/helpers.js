@@ -40,10 +40,10 @@ const formatFlights = (flights = []) => {
     const mensaje =
       `\u{1F6EB} *${flight.salida}* ${formatDateWithSlash(
         flight.fechas[0]
-      )} -> ${flight.horaSalida}\n` +
+      )} \u{23F0} ${flight.horaSalida}\n` +
       `\u{1F6EC} *${flight.destino}* ${formatDateWithSlash(
         flight.fechas[1]
-      )} -> ${flight.horaDestino}\n` +
+      )} \u{23F0} ${flight.horaDestino}\n` +
       `\u{1F4B0} ${flight.precio}€\n` +
       `[Enlace](${LINK}/${flight.salidaCode}/${flight.destinoCode}/${formatDate(
         flight.fechas[0]
