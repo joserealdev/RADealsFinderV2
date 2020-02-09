@@ -1,7 +1,6 @@
 const { checkFlight } = require("./request.js");
 const { readFile, writeTest } = require("./file.js");
-const { formatFlights } = require("./format");
-const { getFollowingSaturdays } = require("./helpers.js");
+const { formatFlights, getFollowingSaturdays } = require("./helpers.js");
 const { concatSelf, filterFares } = require("./filter.js");
 const { NUMBER_OF_WEEKENDS } = require("../data/properties.json");
 
@@ -37,10 +36,14 @@ const checkClientFlights = (flights, clientId) => {
       }
     });
 
-    Promise.all(promises).then(values => {
-      const concated = concatSelf(values);
-      resolve({ [clientId]: concated });
-    });
+    Promise.all(promises)
+      .then(values => {
+        const concated = concatSelf(values);
+        resolve({ [clientId]: concated });
+      })
+      .catch(e => {
+        reject(e);
+      });
   });
 };
 
@@ -60,14 +63,18 @@ const searchForANormal = flight => {
       duration: flight.duration
     };
     promises.push(checkFlight(params));
-    Promise.all(promises).then(values => {
-      const filteredFares = filterFares(
-        values,
-        flight.budget,
-        flight.notDestinations
-      );
-      resolve(filteredFares);
-    });
+    Promise.all(promises)
+      .then(values => {
+        const filteredFares = filterFares(
+          values,
+          flight.budget,
+          flight.notDestinations
+        );
+        resolve(filteredFares);
+      })
+      .catch(e => {
+        reject(e);
+      });
   });
 };
 
@@ -93,14 +100,18 @@ const searchForAWeekend = flight => {
       };
       promises.push(checkFlight(params));
     });
-    Promise.all(promises).then(values => {
-      const filteredFares = filterFares(
-        values,
-        flight.budget,
-        flight.notDestinations
-      );
-      resolve(filteredFares);
-    });
+    Promise.all(promises)
+      .then(values => {
+        const filteredFares = filterFares(
+          values,
+          flight.budget,
+          flight.notDestinations
+        );
+        resolve(filteredFares);
+      })
+      .catch(e => {
+        reject(e);
+      });
   });
 };
 

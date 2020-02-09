@@ -9,14 +9,11 @@ bot.onText(/\/checknow/, (msg, match) => {
   checkNow(msg.chat.id)
     .then(res => {
       res.forEach(clientData => {
-        bot.sendMessage(clientData.uid, clientData.message, {
-          parse_mode: "Markdown",
-          disable_web_page_preview: true
-        });
+        sendMessage(clientData.uid, clientData.message);
       });
     })
     .catch(e => {
-      bot.sendMessage(msg.chat.id, "No tienes vuelos");
+      sendMessage(msg.chat.id, "No tienes vuelos");
     });
 });
 
@@ -37,7 +34,14 @@ bot.onText(/\/start/, (msg, match) => {
 cron.schedule("0 7,11,15,18,21 * * *", () => {
   checkNow().then(res => {
     res.forEach(clientData => {
-      bot.sendMessage(clientData.uid, clientData.message);
+      sendMessage(clientData.uid, clientData.message);
     });
   });
 });
+
+const sendMessage = (uid, text) => {
+  bot.sendMessage(uid, text, {
+    parse_mode: "Markdown",
+    disable_web_page_preview: true
+  });
+};
