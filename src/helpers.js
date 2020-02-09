@@ -31,15 +31,23 @@ const formatDate = date => {
   return [year, month, day].join("-");
 };
 
+const formatDateWithSlash = text => {
+  return text.replace(/^(\d{4})-(\d{2})-(\d{2})$/g, "$3/$2/$1");
+};
+
 const formatFlights = (flights = []) => {
   const formated = flights.map(flight => {
-    const salida = formatDate(flight.fechas[0]);
-    const regreso = formatDate(flight.fechas[1]);
     const mensaje =
-      `\u{1F6EB} *${flight.salida}* ${salida} -> ${flight.horaSalida}\n` +
-      `\u{1F6EC} *${flight.destino}* ${regreso} -> ${flight.horaDestino}\n` +
+      `\u{1F6EB} *${flight.salida}* ${formatDateWithSlash(
+        flight.fechas[0]
+      )} -> ${flight.horaSalida}\n` +
+      `\u{1F6EC} *${flight.destino}* ${formatDateWithSlash(
+        flight.fechas[1]
+      )} -> ${flight.horaDestino}\n` +
       `\u{1F4B0} ${flight.precio}€\n` +
-      `[Enlace](${LINK}/${flight.salidaCode}/${flight.destinoCode}/${salida}/${regreso}/1/0/0/0)`;
+      `[Enlace](${LINK}/${flight.salidaCode}/${flight.destinoCode}/${formatDate(
+        flight.fechas[0]
+      )}/${formatDate(flight.fechas[1])}/1/0/0/0)`;
     return mensaje;
   });
   return formated.join("\n\n");
