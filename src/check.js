@@ -1,6 +1,6 @@
 const { checkFlight } = require("./request.js");
 const { readFile, writeTest } = require("./file.js");
-const { formatFlights, getFollowingSaturdays } = require("./helpers.js");
+const { formatFlights, getFollowingSaturdays, isUserAllowed } = require("./helpers.js");
 const { concatSelf, filterFares } = require("./filter.js");
 const { NUMBER_OF_WEEKENDS } = require("../data/properties.json");
 
@@ -9,17 +9,21 @@ const checkNow = id => {
     const usersData = readFile(id);
     if (usersData) {
       Object.keys(usersData).forEach(key => {
-        checkClientFlights(usersData[key], key)
-          .then(res => {
-            const messages = Object.keys(res).map(uid => {
-              const message = formatFlights(res[uid]);
-              return { uid, message };
+        if (isUserAllowed(key)) {
+          checkClientFlights(usersData[key], key)
+            .then(res => {
+              const messages = Object.keys(res).map(uid => {
+                const message = formatFlights(res[uid]);
+                return { uid, message };
+              });
+              resolve(messages);
+            })
+            .catch(e => {
+              reject(e);
             });
-            resolve(messages);
-          })
-          .catch(e => {
-            reject(e);
-          });
+        } else {
+          reject('No permitido');
+        }
       });
     }
   });

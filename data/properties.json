@@ -1,5 +1,16 @@
 {
   "API": "https://services-api.ryanair.com/farfnd/3/roundTripFares",
   "LINK": "https://www.ryanair.com/es/es/booking/home",
-  "NUMBER_OF_WEEKENDS": 16
+  "NUMBER_OF_WEEKENDS": 16,
+  "ACTIONS": {
+    "DELETE": "delete",
+    "CANCEL": "cancel"
+  },
+  "LITERALS": {
+    "NO_FLIGHTS": "No tienes vuelos",
+    "CANCEL": "Cancelar",
+    "ANYWHERE": "Cualquier sitio",
+    "NOT_ALLOWED": "No permitido",
+    "FLIGHT_TO_DELETE": "Vuelo a borrar"
+  }
 }

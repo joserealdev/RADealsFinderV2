@@ -1,5 +1,17 @@
 const fs = require("fs");
 
+const getUsers = () => {
+  const file = JSON.parse(fs.readFileSync("./userData/users.json", "utf8")) || {};
+  const { users = [] } = file;
+  return users;
+};
+
+const getFlightsByUser = id => {
+  const file = JSON.parse(fs.readFileSync("./userData/flights.json", "utf8")) || {};
+  const { [id]: userFlights = [] } = file
+  return userFlights;
+};
+
 const readFile = id => {
   const setup = JSON.parse(fs.readFileSync("./userData/flights.json", "utf8"));
   if (id) {
@@ -7,6 +19,18 @@ const readFile = id => {
   }
   return setup;
 };
+
+const writeDelete = (uid, data) => {
+  try {
+    const setup = JSON.parse(fs.readFileSync("./userData/flights.json", "utf8"));
+    setup[uid] = data;
+    fs.writeFileSync("./userData/flights.json", JSON.stringify(setup, null, 2));
+  } catch (error) {
+    return false;
+  }
+  return true;
+};
+
 const writeFile = () => {};
 
 const writeTest = data => {
@@ -20,7 +44,10 @@ const writeTest = data => {
 };
 
 module.exports = {
+  getUsers,
+  getFlightsByUser,
   readFile,
+  writeDelete,
   writeFile,
   writeTest
 };

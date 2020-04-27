@@ -1,3 +1,4 @@
+const { getUsers } = require("./file");
 const { LINK } = require("../data/properties.json");
 
 const getFollowingSaturdays = (date, numberOfDays) => {
@@ -53,7 +54,13 @@ const formatFlights = (flights = []) => {
   return formated.join("\n\n");
 };
 
+const isUserAllowed = id => {
+  const user = getUsers().find(user => user.id == id) || {};
+  return user.allowed;
+};
+
 module.exports = {
   formatFlights,
-  getFollowingSaturdays
+  getFollowingSaturdays,
+  isUserAllowed
 };
