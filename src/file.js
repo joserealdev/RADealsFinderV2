@@ -31,7 +31,20 @@ const writeDelete = (uid, data) => {
   return true;
 };
 
-const writeFile = () => {};
+const writeFlight = (uid, data) => {
+  try {
+    const setup = JSON.parse(fs.readFileSync("./userData/flights.json", "utf8"));
+    if (setup[uid]) {
+      setup[uid].push(data);
+    } else {
+      setup[uid] = [data];
+    }
+    fs.writeFileSync("./userData/flights.json", JSON.stringify(setup, null, 2));
+  } catch (error) {
+    return false;
+  }
+  return true;
+};
 
 const writeTest = data => {
   try {
@@ -48,6 +61,6 @@ module.exports = {
   getFlightsByUser,
   readFile,
   writeDelete,
-  writeFile,
+  writeFlight,
   writeTest
 };

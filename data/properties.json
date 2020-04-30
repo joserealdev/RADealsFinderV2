@@ -4,13 +4,22 @@
   "NUMBER_OF_WEEKENDS": 16,
   "ACTIONS": {
     "DELETE": "delete",
-    "CANCEL": "cancel"
+    "CANCEL": "cancel",
+    "CREATE": "create"
   },
   "LITERALS": {
     "NO_FLIGHTS": "No tienes vuelos",
     "CANCEL": "Cancelar",
     "ANYWHERE": "Cualquier sitio",
-    "NOT_ALLOWED": "No permitido",
-    "FLIGHT_TO_DELETE": "Vuelo a borrar"
+    "NOT_ALLOWED": "Acción no permitida",
+    "FLIGHT_TO_DELETE": "Vuelo a borrar",
+    "DEPARTURE_AIRPORT": "Aeropuerto de salida",
+    "DESTINATION_AIRPORT": "Aeropuerto de destino",
+    "CHOOSE_YEAR": "Seleccione el año",
+    "CHOOSE_MONTH": "Seleccione el mes",
+    "CHOOSE_DAY": "Seleccione el día",
+    "CHOOSE_DURATION": "Seleccione la duración",
+    "CHOOSE_BUDGET": "Seleccione el presupuesto",
+    "OPERATION_CANCELLED": "Operación cancelada"
   }
 }

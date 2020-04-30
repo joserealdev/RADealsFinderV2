@@ -3,6 +3,7 @@ const { API } = require("../data/properties.json");
 
 const checkFlight = ({ from, destination, dateInterval, duration }) => {
   return new Promise((resolve, reject) => {
+    const year = new Date().getFullYear();
     let parameters = {};
     if (destination) {
       parameters = {
@@ -14,15 +15,15 @@ const checkFlight = ({ from, destination, dateInterval, duration }) => {
       departureAirportIataCode: from,
       durationFrom: duration[0],
       durationTo: duration[1] ? duration[1] : duration[0],
-      inboundDepartureDateFrom: "2020-01-01",
-      inboundDepartureDateTo: "2022-03-30",
+      inboundDepartureDateFrom: `${year}-01-01`,
+      inboundDepartureDateTo: `${year + 1}-12-31`,
       language: "es",
       limit: "32",
       market: "es-es",
       offset: "0",
       outboundDepartureDateFrom: dateInterval[0],
       outboundDepartureDateTo: dateInterval[1],
-      priceValueTo: "150"
+      priceValueTo: "200"
     };
 
     const options = {
@@ -37,11 +38,11 @@ const checkFlight = ({ from, destination, dateInterval, duration }) => {
 
     request(options, (error, response, body) => {
       if (error) {
-        reject(error);
+        reject(`Request error. ${error}`);
       } else if (response.statusCode == 200) {
         resolve(body);
       } else {
-        reject(response.statusCode);
+        reject(`Error, statusCode: ${response.statusCode}`);
       }
     });
   });

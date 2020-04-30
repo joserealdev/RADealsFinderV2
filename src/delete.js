@@ -20,7 +20,6 @@ const showFlights = (id, message) => {
   );
 
   const opts = {
-    reply_to_message_id: message,
     reply_markup: {
         resize_keyboard: true,
         one_time_keyboard: true,

@@ -4,6 +4,7 @@ const TelegramBot = require("node-telegram-bot-api");
 const { ACTIONS, LITERALS } = require("./data/properties.json");
 const { checkNow } = require("./src/check");
 const { deleteFlight, showFlights } = require("./src/delete");
+const { addRoute } = require("./src/create");
 const { isUserAllowed } = require("./src/helpers");
 
 const bot = new TelegramBot(telegramtoken, { polling: true });
@@ -20,6 +21,16 @@ bot.onText(/\/checknow/, (msg, match) => {
       .catch(e => {
         sendMessage(chatID, e || LITERALS.NO_FLIGHTS);
       });
+  } else {
+    sendMessage(chatID, LITERALS.NOT_ALLOWED);
+  }
+});
+
+bot.onText(/\/addroute/, (msg, match) => {
+  const { chat: { id: chatID } } = msg;
+
+  if (isUserAllowed(chatID)) {
+    addRouteHandler(chatID, 'next=departure');
   } else {
     sendMessage(chatID, LITERALS.NOT_ALLOWED);
   }
@@ -60,8 +71,11 @@ bot.on("callback_query", (callbackQuery) => {
         bot.sendMessage(messageChatId, "ERROR AL BORRAR")
       }
       break;
+    case ACTIONS.CREATE:
+      addRouteHandler(messageChatId, params);
+      break;
     case ACTIONS.CANCEL:
-      bot.sendMessage(messageChatId, "Operación cancelada").then(res => {
+      bot.sendMessage(messageChatId, LITERALS.OPERATION_CANCELLED).then(res => {
         setTimeout(() => {
           bot.deleteMessage(messageChatId, res.message_id);
         }, 3000);
@@ -98,4 +112,13 @@ const deleteFlightHandler = (chatID, messageId) => {
   } else {
     bot.sendMessage(chatID, res);
   }
-}
+};
+
+const addRouteHandler = (chatID, params) => {
+  const res = addRoute(chatID, params);
+  if (typeof res === 'object') {
+    bot.sendMessage(chatID, res.msg, res.opts);
+  } else {
+    bot.sendMessage(chatID, res);
+  }
+};

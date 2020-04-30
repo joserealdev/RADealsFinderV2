@@ -2,7 +2,7 @@ const { checkFlight } = require("./request.js");
 const { readFile, writeTest } = require("./file.js");
 const { formatFlights, getFollowingSaturdays, isUserAllowed } = require("./helpers.js");
 const { concatSelf, filterFares } = require("./filter.js");
-const { NUMBER_OF_WEEKENDS } = require("../data/properties.json");
+const { NUMBER_OF_WEEKENDS, LITERALS } = require("../data/properties.json");
 
 const checkNow = id => {
   return new Promise((resolve, reject) => {
@@ -22,7 +22,7 @@ const checkNow = id => {
               reject(e);
             });
         } else {
-          reject('No permitido');
+          reject(LITERALS.NOT_ALLOWED);
         }
       });
     }
