@@ -59,8 +59,14 @@ const isUserAllowed = id => {
   return user.allowed;
 };
 
+const isUserRegistered = (id) => {
+  const user = getUsers().find(user => user.id == id);
+  return user;
+};
+
 module.exports = {
   formatFlights,
   getFollowingSaturdays,
-  isUserAllowed
+  isUserAllowed,
+  isUserRegistered
 };

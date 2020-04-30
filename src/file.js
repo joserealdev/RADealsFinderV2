@@ -1,5 +1,24 @@
 const fs = require("fs");
 
+const createUserEntry = (userdata) => {
+  const configFile = JSON.parse(fs.readFileSync("./userData/users.json", "utf8"));
+  configFile.users.push(
+    {
+      id: userdata.chat.id,
+      nombre: userdata.from.first_name,
+      username: userdata.from.username || "No tiene",
+      isBot: userdata.from.is_bot,
+      allowed: false
+    }
+  )
+  try {
+    fs.writeFileSync("./userData/users.json", JSON.stringify(configFile, null, 2));
+  } catch (e) {
+    return false;
+  }
+  return true;
+};
+
 const getUsers = () => {
   const file = JSON.parse(fs.readFileSync("./userData/users.json", "utf8")) || {};
   const { users = [] } = file;
@@ -57,6 +76,7 @@ const writeTest = data => {
 };
 
 module.exports = {
+  createUserEntry,
   getUsers,
   getFlightsByUser,
   readFile,

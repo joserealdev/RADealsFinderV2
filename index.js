@@ -1,13 +1,26 @@
-const { telegramtoken } = require("./config.json");
+const { telegramtoken, myid } = require("./config.json");
 const cron = require("node-cron");
 const TelegramBot = require("node-telegram-bot-api");
 const { ACTIONS, LITERALS } = require("./data/properties.json");
 const { checkNow } = require("./src/check");
 const { deleteFlight, showFlights } = require("./src/delete");
 const { addRoute } = require("./src/create");
-const { isUserAllowed } = require("./src/helpers");
+const { isUserAllowed, isUserRegistered } = require("./src/helpers");
+const { createUserEntry } = require("./src/file");
 
 const bot = new TelegramBot(telegramtoken, { polling: true });
+
+bot.onText(/\/start/, (msg, match) => {
+  const chatID = msg.chat.id;
+  if (!isUserRegistered(chatID)) {
+    if (createUserEntry(msg)) {
+      bot.sendMessage(chatID, "Se ha creado tu cuenta correctamente");
+      bot.sendMessage(myid, `Nueva alta de @${msg.from.username}`);
+    } else {
+      bot.sendMessage(chatID, "Hubo un fallo al crear su cuenta");
+    }
+  }
+});
 
 bot.onText(/\/checknow/, (msg, match) => {
   const chatID = msg.chat.id;
@@ -43,11 +56,7 @@ bot.onText(/\/delete/, (msg, match) => {
     },
     message_id
   } = msg;
-  if (isUserAllowed(chatID)) {
-    deleteFlightHandler(chatID, message_id);
-  } else {
-    sendMessage(chatID, LITERALS.NOT_ALLOWED);
-  }
+  deleteFlightHandler(chatID, message_id);
 });
 
 bot.on("callback_query", (callbackQuery) => {
