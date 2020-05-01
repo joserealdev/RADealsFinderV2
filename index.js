@@ -83,9 +83,11 @@ bot.on("callback_query", (callbackQuery) => {
         bot.sendMessage(messageChatId, "ERROR AL BORRAR")
       }
       break;
+
     case ACTIONS.CREATE:
       addRouteHandler(messageChatId, params);
       break;
+
     case ACTIONS.CANCEL:
       bot.sendMessage(messageChatId, LITERALS.OPERATION_CANCELLED).then(res => {
         setTimeout(() => {
@@ -93,6 +95,7 @@ bot.on("callback_query", (callbackQuery) => {
         }, 3000);
       });
       break;
+
     case ACTIONS.LANGUAGE:
       if (!getUser(messageChatId) && createUserEntry(callbackQuery.from, params.get("lang"))) {
         bot.sendMessage(messageChatId, "Se ha creado tu cuenta correctamente");
@@ -104,11 +107,13 @@ bot.on("callback_query", (callbackQuery) => {
         bot.sendMessage(messageChatId, "Hubo un fallo al crear su cuenta");
       }
       break;
+
     case ACTIONS.ALLOW_USER:
       if (params.get("allow") === "yes" && allowUser(parseInt(params.get("uid")))) {
         bot.sendMessage(parseInt(params.get("uid")), "Se ha autorizado tu acceso al bot");
       }
       break;
+
     default:
       bot.sendMessage(messageChatId, "Fallo").then(res => {
         setTimeout(() => {

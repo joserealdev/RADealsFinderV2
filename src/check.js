@@ -1,3 +1,4 @@
+const get = require("lodash.get");
 const { checkFlight } = require("./request.js");
 const { readFile, writeTest } = require("./file.js");
 const { formatFlights, getFollowingSaturdays, isUserAllowed } = require("./helpers.js");
@@ -34,6 +35,7 @@ const checkClientFlights = (flights, clientId) => {
     const promises = [];
     flights.forEach(flight => {
       if (flight.searchForAWeekend) {
+        console.log('WEEKEND')
         promises.push(searchForAWeekend(flight));
       } else {
         promises.push(searchForANormal(flight));
@@ -85,8 +87,9 @@ const searchForANormal = flight => {
 const searchForAWeekend = flight => {
   return new Promise((resolve, reject) => {
     const promises = [];
+    const date = get(flight, 'dateInterval[0]');
     const dates = getFollowingSaturdays(
-      flight.dateInterval[0],
+      date,
       NUMBER_OF_WEEKENDS
     );
     dates.forEach(date => {
