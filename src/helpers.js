@@ -59,7 +59,7 @@ const isUserAllowed = id => {
   return user.allowed;
 };
 
-const isUserRegistered = (id) => {
+const getUser = (id) => {
   const user = getUsers().find(user => user.id == id);
   return user;
 };
@@ -68,5 +68,5 @@ module.exports = {
   formatFlights,
   getFollowingSaturdays,
   isUserAllowed,
-  isUserRegistered
+  getUser
 };

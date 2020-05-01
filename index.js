@@ -1,25 +1,28 @@
 const { telegramtoken, myid } = require("./config.json");
 const cron = require("node-cron");
 const TelegramBot = require("node-telegram-bot-api");
-const { ACTIONS, LITERALS } = require("./data/properties.json");
+const { ACTIONS, LITERALS, HELP } = require("./data/properties.json");
 const { checkNow } = require("./src/check");
 const { deleteFlight, showFlights } = require("./src/delete");
 const { addRoute } = require("./src/create");
-const { isUserAllowed, isUserRegistered } = require("./src/helpers");
-const { createUserEntry } = require("./src/file");
+const { isUserAllowed, getUser } = require("./src/helpers");
+const { allowUser, createUserEntry } = require("./src/file");
+const { chooseAllowUser, selectLanguage } = require("./src/register");
 
 const bot = new TelegramBot(telegramtoken, { polling: true });
 
 bot.onText(/\/start/, (msg, match) => {
   const chatID = msg.chat.id;
-  if (!isUserRegistered(chatID)) {
-    if (createUserEntry(msg)) {
-      bot.sendMessage(chatID, "Se ha creado tu cuenta correctamente");
-      bot.sendMessage(myid, `Nueva alta de @${msg.from.username}`);
-    } else {
-      bot.sendMessage(chatID, "Hubo un fallo al crear su cuenta");
-    }
+  if (!getUser(chatID)) {
+    const res = selectLanguage();
+    bot.sendMessage(chatID, res.msg, res.opts);
   }
+});
+
+bot.onText(/\/help/, (msg, match) => {
+  const chatID = msg.chat.id;
+  const lang = getUser(chatID).lang || "en";
+  bot.sendMessage(chatID, HELP[lang].join(''));
 });
 
 bot.onText(/\/checknow/, (msg, match) => {
@@ -62,10 +65,10 @@ bot.onText(/\/delete/, (msg, match) => {
 bot.on("callback_query", (callbackQuery) => {
   const {
     data,
+    from: {
+      id: messageChatId
+    },
     message: {
-      chat: {
-        id: messageChatId
-      },
       message_id
     }
   } = callbackQuery;
@@ -90,11 +93,28 @@ bot.on("callback_query", (callbackQuery) => {
         }, 3000);
       });
       break;
+    case ACTIONS.LANGUAGE:
+      if (!getUser(messageChatId) && createUserEntry(callbackQuery.from, params.get("lang"))) {
+        bot.sendMessage(messageChatId, "Se ha creado tu cuenta correctamente");
+        if (!callbackQuery.from.is_bot) {
+          const res = chooseAllowUser(callbackQuery.from);
+          bot.sendMessage(myid, res.msg, res.opts);
+        }
+      } else {
+        bot.sendMessage(messageChatId, "Hubo un fallo al crear su cuenta");
+      }
+      break;
+    case ACTIONS.ALLOW_USER:
+      if (params.get("allow") === "yes" && allowUser(parseInt(params.get("uid")))) {
+        bot.sendMessage(parseInt(params.get("uid")), "Se ha autorizado tu acceso al bot");
+      }
+      break;
     default:
-      bot.sendMessage(messageChatId, "Fallo");
-      setTimeout(() => {
-        bot.deleteMessage(messageChatId, res.message_id);
-      }, 3000);
+      bot.sendMessage(messageChatId, "Fallo").then(res => {
+        setTimeout(() => {
+          bot.deleteMessage(messageChatId, res.message_id);
+        }, 3000);
+      });
       break;
   }
 });

@@ -5,7 +5,9 @@
   "ACTIONS": {
     "DELETE": "delete",
     "CANCEL": "cancel",
-    "CREATE": "create"
+    "CREATE": "create",
+    "LANGUAGE": "language",
+    "ALLOW_USER": "allow_user"
   },
   "LITERALS": {
     "NO_FLIGHTS": "No tienes vuelos",
@@ -20,6 +22,23 @@
     "CHOOSE_DAY": "Seleccione el día",
     "CHOOSE_DURATION": "Seleccione la duración",
     "CHOOSE_BUDGET": "Seleccione el presupuesto",
-    "OPERATION_CANCELLED": "Operación cancelada"
+    "OPERATION_CANCELLED": "Operación cancelada",
+    "CHOOSE_LANGUAGE": "Seleccione su idioma/Choose your language"
+  },
+  "HELP": {
+    "es": [
+      "/checknow - Comprueba ahora el precio de tus vuelos\n",
+      "/deleteroute - Introduce el comando sin parámetros para ver la lista de vuelos guardados.\n",
+      "/addroute - Añade una nueva ruta. Las fechas que se requieren indican el intervalo en el que se desea que salga el vuelo.",
+      " Para seleccionar una fecha específica seleccione la misma fecha las dos veces.\n",
+      "/help - Muestra este mensaje de ayuda"
+    ],
+    "en": [
+      "/checknow - Comprueba ahora el precio de tus vuelos\n",
+      "/deleteroute - Introduce el comando sin parámetros para ver la lista de vuelos guardados.\n",
+      "/addroute - Añade una nueva ruta. Las fechas que se requieren indican el intervalo en el que se desea que salga el vuelo.",
+      " Para seleccionar una fecha específica seleccione la misma fecha las dos veces.\n",
+      "/help - Muestra este mensaje de ayuda"
+    ]
   }
 }

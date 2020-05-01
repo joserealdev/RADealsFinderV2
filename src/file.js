@@ -1,18 +1,34 @@
 const fs = require("fs");
 
-const createUserEntry = (userdata) => {
-  const configFile = JSON.parse(fs.readFileSync("./userData/users.json", "utf8"));
-  configFile.users.push(
+const allowUser = (uid) => {
+  const usersFile = JSON.parse(fs.readFileSync("./userData/users.json", "utf8"));
+  usersFile.users.forEach((user) => {
+    if (user.id === uid) {
+      user.allowed = true;
+    }
+  });
+  try {
+    fs.writeFileSync("./userData/users.json", JSON.stringify(usersFile, null, 2));
+  } catch (e) {
+    return false;
+  }
+  return true;
+};
+
+const createUserEntry = (userdata, lang) => {
+  const usersFile = JSON.parse(fs.readFileSync("./userData/users.json", "utf8"));
+  usersFile.users.push(
     {
-      id: userdata.chat.id,
-      nombre: userdata.from.first_name,
-      username: userdata.from.username || "No tiene",
-      isBot: userdata.from.is_bot,
+      id: userdata.id,
+      nombre: userdata.first_name,
+      username: userdata.username || "No tiene",
+      isBot: userdata.is_bot,
+      lang,
       allowed: false
     }
   )
   try {
-    fs.writeFileSync("./userData/users.json", JSON.stringify(configFile, null, 2));
+    fs.writeFileSync("./userData/users.json", JSON.stringify(usersFile, null, 2));
   } catch (e) {
     return false;
   }
@@ -76,6 +92,7 @@ const writeTest = data => {
 };
 
 module.exports = {
+  allowUser,
   createUserEntry,
   getUsers,
   getFlightsByUser,
