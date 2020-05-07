@@ -1,20 +1,21 @@
 const { ACTIONS, LITERALS } = require("../data/properties.json");
+const { getLang } = require("./helpers.js");
 const { getFlightsByUser, writeDelete } = require("./file");
 
 const showFlights = (id, message) => {
   const flights = getFlightsByUser(id);
-  if (flights.length === 0) return LITERALS.NO_FLIGHTS;
+  if (flights.length === 0) return LITERALS.NO_FLIGHTS[getLang(id)];
 
   const mapped = flights.map((flight, i) => {
     return [{
-      text: `${flight.from} - ${flight.destination || LITERALS.ANYWHERE}`,
+      text: `${flight.from} - ${flight.destination || LITERALS.ANYWHERE[getLang(id)]}`,
       callback_data: `action=${ACTIONS.DELETE}&index=${i}`
     }];
   });
 
   const cancelButton = (
     {
-      text: LITERALS.CANCEL,
+      text: LITERALS.CANCEL[getLang(id)],
       callback_data: `action=${ACTIONS.CANCEL}`
     }
   );

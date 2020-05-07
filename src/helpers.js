@@ -1,3 +1,4 @@
+const get = require("lodash.get");
 const { getUsers } = require("./file");
 const { LINK } = require("../data/properties.json");
 
@@ -64,9 +65,14 @@ const getUser = (id) => {
   return user;
 };
 
+const getLang = (id) => {
+  return get(usersLang, `${id}.lang`, 'en');
+}
+
 module.exports = {
   formatFlights,
   getFollowingSaturdays,
   isUserAllowed,
-  getUser
+  getUser,
+  getLang
 };

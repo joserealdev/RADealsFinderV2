@@ -41,6 +41,19 @@ const getUsers = () => {
   return users;
 };
 
+const getUsersWithLang = () => {
+  const file = JSON.parse(fs.readFileSync("./userData/users.json", "utf8")) || {};
+  const { users = [] } = file;
+  const mapped = {};
+  users.forEach((user) => {
+    mapped[user.id] = {
+      id: user.id,
+      lang: user.lang || "en"
+    };
+  });
+  return mapped;
+};
+
 const getFlightsByUser = id => {
   const file = JSON.parse(fs.readFileSync("./userData/flights.json", "utf8")) || {};
   const { [id]: userFlights = [] } = file
@@ -96,6 +109,7 @@ module.exports = {
   createUserEntry,
   getUsers,
   getFlightsByUser,
+  getUsersWithLang,
   readFile,
   writeDelete,
   writeFlight,

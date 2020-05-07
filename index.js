@@ -5,9 +5,10 @@ const { ACTIONS, LITERALS, HELP } = require("./data/properties.json");
 const { checkNow } = require("./src/check");
 const { deleteFlight, showFlights } = require("./src/delete");
 const { addRoute } = require("./src/create");
-const { isUserAllowed, getUser } = require("./src/helpers");
-const { allowUser, createUserEntry } = require("./src/file");
+const { isUserAllowed, getUser, getLang } = require("./src/helpers");
+const { allowUser, createUserEntry, getUsersWithLang } = require("./src/file");
 const { chooseAllowUser, selectLanguage } = require("./src/register");
+global.usersLang = getUsersWithLang();
 
 const bot = new TelegramBot(telegramtoken, { polling: true });
 
@@ -21,8 +22,7 @@ bot.onText(/\/start/, (msg, match) => {
 
 bot.onText(/\/help/, (msg, match) => {
   const chatID = msg.chat.id;
-  const lang = getUser(chatID).lang || "en";
-  bot.sendMessage(chatID, HELP[lang].join(''));
+  bot.sendMessage(chatID, HELP[getLang(chatID)].join(''));
 });
 
 bot.onText(/\/checknow/, (msg, match) => {
@@ -35,10 +35,10 @@ bot.onText(/\/checknow/, (msg, match) => {
         });
       })
       .catch(e => {
-        sendMessage(chatID, e || LITERALS.NO_FLIGHTS);
+        sendMessage(chatID, e || LITERALS.NO_FLIGHTS[getLang(chatID)]);
       });
   } else {
-    sendMessage(chatID, LITERALS.NOT_ALLOWED);
+    sendMessage(chatID, LITERALS.NOT_ALLOWED[getLang(chatID)]);
   }
 });
 
@@ -48,7 +48,7 @@ bot.onText(/\/addroute/, (msg, match) => {
   if (isUserAllowed(chatID)) {
     addRouteHandler(chatID, 'next=departure');
   } else {
-    sendMessage(chatID, LITERALS.NOT_ALLOWED);
+    sendMessage(chatID, LITERALS.NOT_ALLOWED[getLang(chatID)]);
   }
 });
 
@@ -80,7 +80,7 @@ bot.on("callback_query", (callbackQuery) => {
       if (deleteFlight(messageChatId, params.get("index"))) {
         deleteFlightHandler(messageChatId);
       } else {
-        bot.sendMessage(messageChatId, "ERROR AL BORRAR")
+        bot.sendMessage(messageChatId, LITERALS.DELETE_ERROR[getLang(messageChatId)])
       }
       break;
 
@@ -89,7 +89,7 @@ bot.on("callback_query", (callbackQuery) => {
       break;
 
     case ACTIONS.CANCEL:
-      bot.sendMessage(messageChatId, LITERALS.OPERATION_CANCELLED).then(res => {
+      bot.sendMessage(messageChatId, LITERALS.OPERATION_CANCELLED[getLang(messageChatId)]).then(res => {
         setTimeout(() => {
           bot.deleteMessage(messageChatId, res.message_id);
         }, 3000);
@@ -98,19 +98,19 @@ bot.on("callback_query", (callbackQuery) => {
 
     case ACTIONS.LANGUAGE:
       if (!getUser(messageChatId) && createUserEntry(callbackQuery.from, params.get("lang"))) {
-        bot.sendMessage(messageChatId, "Se ha creado tu cuenta correctamente");
+        bot.sendMessage(messageChatId, LITERALS.ACCOUNT_CREATED[getLang(messageChatId)]);
         if (!callbackQuery.from.is_bot) {
           const res = chooseAllowUser(callbackQuery.from);
           bot.sendMessage(myid, res.msg, res.opts);
         }
       } else {
-        bot.sendMessage(messageChatId, "Hubo un fallo al crear su cuenta");
+        bot.sendMessage(messageChatId, LITERALS.ACCOUNT_FAIL[getLang(messageChatId)]);
       }
       break;
 
     case ACTIONS.ALLOW_USER:
       if (params.get("allow") === "yes" && allowUser(parseInt(params.get("uid")))) {
-        bot.sendMessage(parseInt(params.get("uid")), "Se ha autorizado tu acceso al bot");
+        bot.sendMessage(parseInt(params.get("uid")), LITERALS.ACCOUNT_GRANTED[getLang(parseInt(params.get("uid")))]);
       }
       break;
 
@@ -129,6 +129,8 @@ cron.schedule("0 7,11,15,18,21 * * *", () => {
     res.forEach(clientData => {
       sendMessage(clientData.uid, clientData.message);
     });
+  }).catch((e) => {
+    sendMessage(myid, `Error CRON. ${e}`);
   });
 });
 
@@ -142,7 +144,7 @@ const sendMessage = (uid, text) => {
 const deleteFlightHandler = (chatID, messageId) => {
   const res = showFlights(chatID, messageId);
   if (typeof res === 'object') {
-    bot.sendMessage(chatID, LITERALS.FLIGHT_TO_DELETE, res);
+    bot.sendMessage(chatID, LITERALS.FLIGHT_TO_DELETE[getLang(chatID)], res);
   } else {
     bot.sendMessage(chatID, res);
   }

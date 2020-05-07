@@ -10,35 +10,98 @@
     "ALLOW_USER": "allow_user"
   },
   "LITERALS": {
-    "NO_FLIGHTS": "No tienes vuelos",
-    "CANCEL": "Cancelar",
-    "ANYWHERE": "Cualquier sitio",
-    "NOT_ALLOWED": "Acción no permitida",
-    "FLIGHT_TO_DELETE": "Vuelo a borrar",
-    "DEPARTURE_AIRPORT": "Aeropuerto de salida",
-    "DESTINATION_AIRPORT": "Aeropuerto de destino",
-    "CHOOSE_YEAR": "Seleccione el año",
-    "CHOOSE_MONTH": "Seleccione el mes",
-    "CHOOSE_DAY": "Seleccione el día",
-    "CHOOSE_DURATION": "Seleccione la duración",
-    "CHOOSE_BUDGET": "Seleccione el presupuesto",
-    "OPERATION_CANCELLED": "Operación cancelada",
-    "CHOOSE_LANGUAGE": "Seleccione su idioma/Choose your language"
+    "NO_FLIGHTS": {
+      "es": "No tienes vuelos",
+      "en": "You don't have flights"
+    },
+    "CANCEL": {
+      "es": "Cancelar",
+      "en": "Cancel"
+    },
+    "ANYWHERE": {
+      "es": "Cualquier sitio",
+      "en": "Anywhere"
+    },
+    "NOT_ALLOWED": {
+      "es": "Acción no permitida",
+      "en": "Action not allowed"
+    },
+    "FLIGHT_TO_DELETE": {
+      "es": "Vuelo a borrar",
+      "en": "Flight to delete"
+    },
+    "DEPARTURE_AIRPORT": {
+      "es": "Aeropuerto de salida",
+      "en": "Departure airport"
+    },
+    "DESTINATION_AIRPORT": {
+      "es": "Aeropuerto de destino",
+      "en": "Destination airport"
+    },
+    "CHOOSE_YEAR": {
+      "es": "Seleccione el año",
+      "en": "Select year"
+    },
+    "CHOOSE_MONTH": {
+      "es": "Seleccione el mes",
+      "en": "Select the month"
+    },
+    "CHOOSE_DAY": {
+      "es": "Seleccione el día",
+      "en": "Select the day"
+    },
+    "CHOOSE_DURATION": {
+      "es": "Seleccione la duración",
+      "en": "Select duration"
+    },
+    "CHOOSE_BUDGET": {
+      "es": "Seleccione el presupuesto",
+      "en": "Select budget"
+    },
+    "OPERATION_CANCELLED": {
+      "es": "Operación cancelada",
+      "en": "Operation cancelled"
+    },
+    "CHOOSE_LANGUAGE": "Seleccione su idioma/Choose your language",
+    "ACCOUNT_CREATED": {
+      "es": "Se ha creado tu cuenta correctamente",
+      "en": "Your account has been created successfully"
+    },
+    "ACCOUNT_FAIL": {
+      "es": "Hubo un fallo al crear su cuenta",
+      "en": "There was a failure creating your account"
+    },
+    "ACCOUNT_GRANTED": {
+      "es": "Se ha autorizado tu acceso al bot",
+      "en": "Your access to the bot has been authorized"
+    },
+    "FLIGHT_INSERTED": {
+      "es": "Vuelo creado correctamente",
+      "en": "Flight created successfully"
+    },
+    "FLIGHT_INSERTED_ERROR": {
+      "es": "Error al crear el vuelo",
+      "en": "Error creating the flight"
+    },
+    "DELETE_ERROR": {
+      "es": "Error al borrar el vuelo",
+      "en": "Error deleting the flight"
+    }
   },
   "HELP": {
     "es": [
       "/checknow - Comprueba ahora el precio de tus vuelos\n",
-      "/deleteroute - Introduce el comando sin parámetros para ver la lista de vuelos guardados.\n",
+      "/deleteroute - Introduce el comando para ver la lista de vuelos guardados. Pulse en el vuelo que desea eliminar.\n",
       "/addroute - Añade una nueva ruta. Las fechas que se requieren indican el intervalo en el que se desea que salga el vuelo.",
       " Para seleccionar una fecha específica seleccione la misma fecha las dos veces.\n",
       "/help - Muestra este mensaje de ayuda"
     ],
     "en": [
-      "/checknow - Comprueba ahora el precio de tus vuelos\n",
-      "/deleteroute - Introduce el comando sin parámetros para ver la lista de vuelos guardados.\n",
-      "/addroute - Añade una nueva ruta. Las fechas que se requieren indican el intervalo en el que se desea que salga el vuelo.",
-      " Para seleccionar una fecha específica seleccione la misma fecha las dos veces.\n",
-      "/help - Muestra este mensaje de ayuda"
+      "/checknow - Check now the price of your flights.\n",
+      "/deleteroute - Enter the command to view the list of saved flights. Click on the flight you want to delete.\n",
+      "/addroute - Add a new route. The required dates indicate the interval at which you want the flight to depart.",
+      " To select a specific date, select the same date twice.\n",
+      "/help - Show this help message."
     ]
   }
 }

@@ -1,4 +1,6 @@
+const { myid } = require('../config.json');
 const { writeFlight } = require("./file");
+const { getLang } = require("./helpers.js");
 const { ACTIONS, LITERALS } = require("../data/properties.json");
 const airportCodes = require("../data/codes.json");
 const { departureAirports, destinationAirports } = require("../data/airports.json");
@@ -44,9 +46,9 @@ const showDepartureAirports = (uid) => {
     }
   });
   
-  const buttons = [mapped, [getCancelButton()]];
+  const buttons = [mapped, [getCancelButton(uid)]];
 
-	return { msg: LITERALS.DEPARTURE_AIRPORT, opts: getOptsKeyboard(buttons) };
+	return { msg: LITERALS.DEPARTURE_AIRPORT[getLang(uid)], opts: getOptsKeyboard(buttons) };
 };
 
 const showDestinationAirports = (uid) => {
@@ -65,10 +67,10 @@ const showDestinationAirports = (uid) => {
 		})
 	})
 	if (row.length > 0) buttons.push(row)
-	buttons.push([{text: "Cualquier destino", callback_data: `action=${ACTIONS.CREATE}&destination=all&next=year1`}])
-  buttons.push([getCancelButton()]);
+	buttons.push([{text: LITERALS.ANYWHERE[getLang(uid)], callback_data: `action=${ACTIONS.CREATE}&destination=all&next=year1`}])
+  buttons.push([getCancelButton(uid)]);
 
-	return { msg: LITERALS.DESTINATION_AIRPORT, opts: getOptsKeyboard(buttons) };
+	return { msg: LITERALS.DESTINATION_AIRPORT[getLang(uid)], opts: getOptsKeyboard(buttons) };
 };
 
 const chooseYear1 = (uid) => {
@@ -81,14 +83,16 @@ const chooseYear1 = (uid) => {
       }
     );
   })];
-  buttons.push([{text: "Escapada Sab-Dom", callback_data: `action=${ACTIONS.CREATE}&year1=esc&next=budget`}]);
-  buttons.push([getCancelButton()]);
+  if (uid === myid) buttons.push([{text: "Escapada Sab-Dom", callback_data: `action=${ACTIONS.CREATE}&year1=esc&next=budget`}]);
+  buttons.push([getCancelButton(uid)]);
 
-	return { msg: LITERALS.CHOOSE_YEAR, opts: getOptsKeyboard(buttons) };
+	return { msg: LITERALS.CHOOSE_YEAR[getLang(uid)], opts: getOptsKeyboard(buttons) };
 };
 
 const chooseMonth1 = (uid) => {
-  const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+  const months = getLang(uid) === 'es'
+    ? ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+    : ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   const actualMonth = new Date().getMonth();
   const split = parseInt(udata[uid].year1) == new Date().getFullYear() ? actualMonth : 0
 
@@ -105,9 +109,9 @@ const chooseMonth1 = (uid) => {
     })
   })
   if (row.length > 0) buttons.push(row);
-  buttons.push([getCancelButton()]);
+  buttons.push([getCancelButton(uid)]);
 
-	return { msg: LITERALS.CHOOSE_MONTH, opts: getOptsKeyboard(buttons) };
+	return { msg: LITERALS.CHOOSE_MONTH[getLang(uid)], opts: getOptsKeyboard(buttons) };
 };
 
 const chooseDay1 = (uid) => {
@@ -128,9 +132,9 @@ const chooseDay1 = (uid) => {
     i++;
   }
   if (row.length > 0) buttons.push(row)
-  buttons.push([getCancelButton()]);
+  buttons.push([getCancelButton(uid)]);
 
-	return { msg: LITERALS.CHOOSE_DAY, opts: getOptsKeyboard(buttons) };
+	return { msg: LITERALS.CHOOSE_DAY[getLang(uid)], opts: getOptsKeyboard(buttons) };
 };
 
 const chooseYear2 = (uid) => {
@@ -143,13 +147,15 @@ const chooseYear2 = (uid) => {
       }
     );
   })];
-  buttons.push([getCancelButton()]);
+  buttons.push([getCancelButton(uid)]);
 
-	return { msg: LITERALS.CHOOSE_YEAR, opts: getOptsKeyboard(buttons) };
+	return { msg: LITERALS.CHOOSE_YEAR[getLang(uid)], opts: getOptsKeyboard(buttons) };
 };
 
 const chooseMonth2 = (uid) => {
-  const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+  const months = getLang(uid) === 'es'
+    ? ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+    : ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   const split = parseInt(udata[uid].year1) == parseInt(udata[uid].year2) ? parseInt(udata[uid].month1) - 1 : 0
 
   const buttons = [];
@@ -165,9 +171,9 @@ const chooseMonth2 = (uid) => {
     })
   })
   if (row.length > 0) buttons.push(row);
-  buttons.push([getCancelButton()]);
+  buttons.push([getCancelButton(uid)]);
 
-	return { msg: LITERALS.CHOOSE_MONTH, opts: getOptsKeyboard(buttons) };
+	return { msg: LITERALS.CHOOSE_MONTH[getLang(uid)], opts: getOptsKeyboard(buttons) };
 };
 
 const chooseDay2 = (uid) => {
@@ -189,9 +195,9 @@ const chooseDay2 = (uid) => {
     i++;
   }
   if (row.length > 0) buttons.push(row)
-  buttons.push([getCancelButton()]);
+  buttons.push([getCancelButton(uid)]);
 
-	return { msg: LITERALS.CHOOSE_DAY, opts: getOptsKeyboard(buttons) };
+	return { msg: LITERALS.CHOOSE_DAY[getLang(uid)], opts: getOptsKeyboard(buttons) };
 };
 
 const chooseDuration = (uid) => {
@@ -213,9 +219,9 @@ const chooseDuration = (uid) => {
       callback_data: `action=${ACTIONS.CREATE}&duration=4-7&next=budget`
     }
   ];
-  const buttons = [fRow, sRow, [getCancelButton()]];
+  const buttons = [fRow, sRow, [getCancelButton(uid)]];
 
-	return { msg: LITERALS.CHOOSE_DURATION, opts: getOptsKeyboard(buttons) };
+	return { msg: LITERALS.CHOOSE_DURATION[getLang(uid)], opts: getOptsKeyboard(buttons) };
 };
 
 const chooseBudget = (uid) => {
@@ -227,8 +233,8 @@ const chooseBudget = (uid) => {
       }
     )
   });
-  const buttons = [fRow, [getCancelButton()]];
-  return { msg: LITERALS.CHOOSE_BUDGET, opts: getOptsKeyboard(buttons) };
+  const buttons = [fRow, [getCancelButton(uid)]];
+  return { msg: LITERALS.CHOOSE_BUDGET[getLang(uid)], opts: getOptsKeyboard(buttons) };
 };
 
 const insertData = (uid) => {
@@ -267,12 +273,14 @@ const insertData = (uid) => {
     };
   };
   
-  return writeFlight(uid, flight) ? "insertado" : "Error al insertar";
+  return writeFlight(uid, flight)
+    ? LITERALS.FLIGHT_INSERTED[getLang(uid)]
+    : LITERALS.FLIGHT_INSERTED_ERROR[getLang(uid)];
 }
 
-const getCancelButton = () => {
+const getCancelButton = (id) => {
   return {
-    text: LITERALS.CANCEL,
+    text: LITERALS.CANCEL[getLang(id)],
     callback_data: `action=${ACTIONS.CANCEL}`
   };
 };

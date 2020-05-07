@@ -1,7 +1,7 @@
 const get = require("lodash.get");
 const { checkFlight } = require("./request.js");
 const { readFile, writeTest } = require("./file.js");
-const { formatFlights, getFollowingSaturdays, isUserAllowed } = require("./helpers.js");
+const { formatFlights, getFollowingSaturdays, getLang, isUserAllowed } = require("./helpers.js");
 const { concatSelf, filterFares } = require("./filter.js");
 const { NUMBER_OF_WEEKENDS, LITERALS } = require("../data/properties.json");
 
@@ -23,7 +23,7 @@ const checkNow = id => {
               reject(e);
             });
         } else {
-          reject(LITERALS.NOT_ALLOWED);
+          reject(LITERALS.NOT_ALLOWED[getLang(id)]);
         }
       });
     }
@@ -35,10 +35,9 @@ const checkClientFlights = (flights, clientId) => {
     const promises = [];
     flights.forEach(flight => {
       if (flight.searchForAWeekend) {
-        console.log('WEEKEND')
-        promises.push(searchForAWeekend(flight));
+        promises.push(searchWeekend(flight));
       } else {
-        promises.push(searchForANormal(flight));
+        promises.push(searchNormal(flight));
       }
     });
 
@@ -53,7 +52,7 @@ const checkClientFlights = (flights, clientId) => {
   });
 };
 
-const searchForANormal = flight => {
+const searchNormal = flight => {
   return new Promise((resolve, reject) => {
     const promises = [];
     let params = {};
@@ -84,7 +83,7 @@ const searchForANormal = flight => {
   });
 };
 
-const searchForAWeekend = flight => {
+const searchWeekend = flight => {
   return new Promise((resolve, reject) => {
     const promises = [];
     const date = get(flight, 'dateInterval[0]');
