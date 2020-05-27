@@ -6,7 +6,7 @@ const { checkNow } = require("./src/check");
 const { deleteFlight, showFlights } = require("./src/delete");
 const { addRoute } = require("./src/create");
 const { isUserAllowed, getUser, getLang } = require("./src/helpers");
-const { allowUser, createUserEntry, getUsersWithLang } = require("./src/file");
+const { allowUser, createUserEntry, getUsersWithLang, getUsers } = require("./src/file");
 const { chooseAllowUser, selectLanguage } = require("./src/register");
 global.usersLang = getUsersWithLang();
 
@@ -60,6 +60,16 @@ bot.onText(/\/delete/, (msg, match) => {
     message_id
   } = msg;
   deleteFlightHandler(chatID, message_id);
+});
+
+bot.onText(/\/godtext (.*)/, (msg, match) => {
+  const chatID = msg.chat.id;
+  if (chatID === myid) {
+    const users = getUsers();
+    users.forEach((user) => {
+      sendMessage(user.id, match[1]);
+    });
+  }
 });
 
 bot.on("callback_query", (callbackQuery) => {
@@ -138,6 +148,8 @@ const sendMessage = (uid, text) => {
   bot.sendMessage(uid, text, {
     parse_mode: "Markdown",
     disable_web_page_preview: true
+  }).catch((e) => {
+    bot.sendMessage(myid, `ERROR: ${e}`);
   });
 };
 
@@ -146,7 +158,7 @@ const deleteFlightHandler = (chatID, messageId) => {
   if (typeof res === 'object') {
     bot.sendMessage(chatID, LITERALS.FLIGHT_TO_DELETE[getLang(chatID)], res);
   } else {
-    bot.sendMessage(chatID, res);
+    sendMessage(chatID, res);
   }
 };
 
@@ -155,6 +167,6 @@ const addRouteHandler = (chatID, params) => {
   if (typeof res === 'object') {
     bot.sendMessage(chatID, res.msg, res.opts);
   } else {
-    bot.sendMessage(chatID, res);
+    sendMessage(chatID, res);
   }
 };

@@ -29,6 +29,10 @@ const createUserEntry = (userdata, lang) => {
   )
   try {
     fs.writeFileSync("./userData/users.json", JSON.stringify(usersFile, null, 2));
+    usersLang[userdata.id] = {
+      id: userdata.id,
+      lang: lang || "en"
+    };
   } catch (e) {
     return false;
   }
