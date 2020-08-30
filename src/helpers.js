@@ -1,6 +1,6 @@
 const get = require("lodash.get");
 const { getUsers } = require("./file");
-const { LINK } = require("../data/properties.json");
+const { LINK, LITERALS } = require("../data/properties.json");
 
 const getFollowingSaturdays = (date, numberOfDays) => {
   const first = date ? new Date(date) : new Date();
@@ -37,7 +37,7 @@ const formatDateWithSlash = text => {
   return text.replace(/^(\d{4})-(\d{2})-(\d{2})$/g, "$3/$2/$1");
 };
 
-const formatFlights = (flights = []) => {
+const formatFlights = (flights = [], uid) => {
   const formated = flights.map(flight => {
     const mensaje =
       `\u{1F6EB} *${flight.salida}* ${formatDateWithSlash(
@@ -47,7 +47,7 @@ const formatFlights = (flights = []) => {
         flight.fechas[1]
       )} \u{23F0} ${flight.horaDestino}\n` +
       `\u{1F4B0} ${flight.precio}€\n` +
-      `[Enlace](${LINK}/${flight.salidaCode}/${flight.destinoCode}/${formatDate(
+      `[${LITERALS.LINK[getLang(uid)]}](${LINK}/${flight.salidaCode}/${flight.destinoCode}/${formatDate(
         flight.fechas[0]
       )}/${formatDate(flight.fechas[1])}/1/0/0/0)`;
     return mensaje;
