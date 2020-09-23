@@ -39,14 +39,21 @@ const addRoute = (uid, data) => {
 
 const showDepartureAirports = (uid) => {
   udata[uid] = {};
-	const mapped = departureAirports.map(airport => {
-    return {
-      text: airport.nombre,
-      callback_data: `action=${ACTIONS.CREATE}&departure=${airport.code}&next=destination`
-    }
-  });
-  
-  const buttons = [mapped, [getCancelButton(uid)]];
+
+  const buttons = [];
+	let row = [];
+	departureAirports.forEach((airport, i) => {
+		if (i > 0 && i%3 == 0) {
+			buttons.push(row)
+			row = []
+		}
+		row.push({
+			text: airport.nombre,
+			callback_data: `action=${ACTIONS.CREATE}&departure=${airport.code}&next=destination`
+		})
+	})
+	if (row.length > 0) buttons.push(row);
+  buttons.push([getCancelButton(uid)]);
 
 	return { msg: LITERALS.DEPARTURE_AIRPORT[getLang(uid)], opts: getOptsKeyboard(buttons) };
 };

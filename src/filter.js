@@ -116,11 +116,16 @@ const filterByPrice = (data, budget) => {
   return filteredByPrice;
 };
 
+const filterByNoStops = (airports) => {
+  return airports.filter(airport => airport.connectingAirport === null);
+}
+
 const concatSelf = arr => {
   return [].concat.apply([], arr);
 };
 
 module.exports = {
   concatSelf,
-  filterFares
+  filterFares,
+  filterByNoStops
 };
