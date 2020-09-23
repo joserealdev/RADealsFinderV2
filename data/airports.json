@@ -19,6 +19,10 @@
     {
       "nombre": "Madrid",
       "code": "MAD"
+    },
+    {
+      "nombre": "Lisboa",
+      "code": "LIS"
     }
   ],
   "destinationAirports": [
@@ -100,7 +104,11 @@
     {
       "nombre": "Jerez",
       "code": "XRY",
-      "rutas": ["BCN", "STN", "HHN"]
+      "rutas": [
+        "BCN",
+        "STN",
+        "HHN"
+      ]
     },
     {
       "nombre": "Sevilla",
@@ -268,7 +276,108 @@
     {
       "nombre": "Madrid",
       "code": "MAD",
-      "rutas": ["MLA"]
+      "rutas": [
+        "ACE",
+        "ATH",
+        "BER",
+        "BGY",
+        "BHX",
+        "BLQ",
+        "BRI",
+        "BRU",
+        "BTS",
+        "BUD",
+        "BVA",
+        "CAG",
+        "CGN",
+        "CIA",
+        "CPH",
+        "CRL",
+        "CTA",
+        "DUB",
+        "EIN",
+        "FEZ",
+        "FRA",
+        "FUE",
+        "HAM",
+        "IBZ",
+        "KBP",
+        "KRK",
+        "LPA",
+        "LUX",
+        "MAH",
+        "MAN",
+        "MLA",
+        "MRS",
+        "MXP",
+        "NAP",
+        "NUE",
+        "OPO",
+        "OTP",
+        "OZZ",
+        "PMI",
+        "PMO",
+        "PRG",
+        "PSA",
+        "RAK",
+        "RBA",
+        "SCQ",
+        "SOF",
+        "STN",
+        "SXF",
+        "TFN",
+        "TFS",
+        "TNG",
+        "VIE",
+        "VNO",
+        "WMI",
+        "WRO"
+      ]
+    },
+    {
+      "nombre": "Lisboa",
+      "code": "LIS",
+      "rutas": [
+        "AGP",
+        "BER",
+        "BGY",
+        "BLQ",
+        "BOD",
+        "BRE",
+        "BRU",
+        "BUD",
+        "BVA",
+        "CFE",
+        "CIA",
+        "CRL",
+        "DUB",
+        "EDI",
+        "EIN",
+        "FKB",
+        "FMM",
+        "FRA",
+        "HAM",
+        "KRK",
+        "LDE",
+        "LUX",
+        "MAN",
+        "MLA",
+        "MRS",
+        "NAP",
+        "OPO",
+        "PDL",
+        "PSA",
+        "STN",
+        "SVQ",
+        "SXF",
+        "TER",
+        "TLS",
+        "VIE",
+        "VLC",
+        "WMI",
+        "WRO",
+        "ZAZ"
+      ]
     }
   ]
 }
