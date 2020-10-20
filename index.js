@@ -31,7 +31,7 @@ bot.onText(/\/checknow/, (msg, match) => {
     checkNow(chatID)
       .then(res => {
         res.forEach(clientData => {
-          sendMessage(clientData.uid, clientData.message);
+          sendMessage(clientData.uid, clientData.message || LITERALS.NO_FLIGHTS[getLang(chatID)]);
         });
       })
       .catch(e => {
@@ -137,7 +137,7 @@ bot.on("callback_query", (callbackQuery) => {
 cron.schedule("0 7,11,15,18,21 * * *", () => {
   checkNow().then(res => {
     res.forEach(clientData => {
-      sendMessage(clientData.uid, clientData.message);
+      sendMessage(clientData.uid, clientData.message || LITERALS.NO_FLIGHTS[getLang(clientData.uid)]);
     });
   }).catch((e) => {
     sendMessage(myid, `Error CRON. ${e}`);
