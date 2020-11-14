@@ -1,4 +1,5 @@
 const request = require("request");
+const { getFakeUserAgent } = require("./helpers");
 const { API } = require("../data/properties.json");
 
 const checkFlight = ({ from, destination, dateInterval, duration }) => {
@@ -29,7 +30,8 @@ const checkFlight = ({ from, destination, dateInterval, duration }) => {
     const options = {
       headers: {
         accept: "application/json, text/plain, */*",
-        "accept-encoding": "*"
+        "accept-encoding": "*",
+        "user-agent": getFakeUserAgent()
       },
       uri: API,
       qs: parameters,
