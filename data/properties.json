@@ -86,6 +86,10 @@
     "DELETE_ERROR": {
       "es": "Error al borrar el vuelo",
       "en": "Error deleting the flight"
+    },
+    "LINK": {
+      "es": "Enlace",
+      "en": "Link"
     }
   },
   "HELP": {
