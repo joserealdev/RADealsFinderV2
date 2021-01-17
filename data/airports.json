@@ -23,6 +23,14 @@
     {
       "nombre": "Lisboa",
       "code": "LIS"
+    },
+    {
+      "nombre": "Oslo Torp",
+      "code": "TRF"
+    },
+    {
+      "nombre": "Oslo Lufthavn",
+      "code": "OSL"
     }
   ],
   "destinationAirports": [
@@ -107,7 +115,7 @@
       "rutas": [
         "BCN",
         "STN",
-        "HHN"
+        "PMI"
       ]
     },
     {
@@ -377,6 +385,32 @@
         "WMI",
         "WRO",
         "ZAZ"
+      ]
+    },
+    {
+      "nombre": "Oslo Torp",
+      "code": "TRF",
+      "rutas": [
+        "AGP",
+        "ALC",
+        "BGY",
+        "GDN",
+        "KRK",
+        "KTW",
+        "MAN",
+        "POZ",
+        "STN",
+        "VIE",
+        "WMI",
+        "WRO"
+      ]
+    },
+    {
+      "nombre": "Oslo Lufthavn",
+      "code": "OSL",
+      "rutas": [
+        "STN",
+        "VNO"
       ]
     }
   ]
