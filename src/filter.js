@@ -1,9 +1,9 @@
 const get = require("lodash.get");
 
 const filterFares = (userdata, budget, countries) => {
-  const data = userdata.map(element => {
+  const data = userdata.map((element) => {
     const faresel = get(JSON.parse(element), "fares", []);
-    const filter = faresel.map(fare => {
+    const filter = faresel.map((fare) => {
       const dpAirport = get(fare, "outbound.departureAirport.name", "");
       const dpAirportCode = get(fare, "outbound.departureAirport.iataCode", "");
       const dpHour = get(fare, "outbound.departureDate", "").split("T")[1];
@@ -12,7 +12,7 @@ const filterFares = (userdata, budget, countries) => {
       const arrHour = get(fare, "inbound.departureDate", "").split("T")[1];
       const dates = [
         get(fare, "outbound.departureDate", "").split("T")[0],
-        get(fare, "inbound.departureDate", "").split("T")[0]
+        get(fare, "inbound.departureDate", "").split("T")[0],
       ];
       const price = get(fare, "summary.price.value", "");
       const country = get(fare, "outbound.arrivalAirport.countryName", "");
@@ -25,7 +25,7 @@ const filterFares = (userdata, budget, countries) => {
         arrHour,
         dates,
         price,
-        country
+        country,
       };
     });
     return filter;
@@ -38,18 +38,11 @@ const filterFares = (userdata, budget, countries) => {
   return getUnicLowest(filteredPrice);
 };
 
-const getUnicLowest = data => {
-  const unique = [...new Set(data.map(item => item.arrAirport))];
-  const hj = unique.map(val => {
-    const {
-      departure,
-      dpCode,
-      dpHour,
-      arrCode,
-      arrHour,
-      precio,
-      fechas
-    } = lowestFare(val, data);
+const getUnicLowest = (data) => {
+  const unique = [...new Set(data.map((item) => item.arrAirport))];
+  const hj = unique.map((val) => {
+    const { departure, dpCode, dpHour, arrCode, arrHour, precio, fechas } =
+      lowestFare(val, data);
     return {
       salida: departure,
       salidaCode: dpCode,
@@ -58,7 +51,7 @@ const getUnicLowest = data => {
       destinoCode: arrCode,
       horaDestino: arrHour,
       precio,
-      fechas
+      fechas,
     };
   });
   return hj.sort((a, b) =>
@@ -74,7 +67,7 @@ const lowestFare = (llave, data) => {
   let dpHour = "";
   let arrAirportCode = "";
   let arrHour = "";
-  data.forEach(el => {
+  data.forEach((el) => {
     if (el.arrAirport == llave && el.price < min) {
       min = el.price;
       dates = el.dates;
@@ -92,13 +85,13 @@ const lowestFare = (llave, data) => {
     arrCode: arrAirportCode,
     arrHour: arrHour,
     precio: min,
-    fechas: dates
+    fechas: dates,
   };
 };
 
 const filterByCountry = (data, filterList) => {
   const filteredCountries = [];
-  data.forEach(flight => {
+  data.forEach((flight) => {
     if (filterList.indexOf(flight.country.toLowerCase()) === -1) {
       filteredCountries.push(flight);
     }
@@ -108,7 +101,7 @@ const filterByCountry = (data, filterList) => {
 
 const filterByPrice = (data, budget) => {
   const filteredByPrice = [];
-  data.forEach(flight => {
+  data.forEach((flight) => {
     if (flight.price < budget) {
       filteredByPrice.push(flight);
     }
@@ -117,15 +110,15 @@ const filterByPrice = (data, budget) => {
 };
 
 const filterByNoStops = (airports) => {
-  return airports.filter(airport => airport.connectingAirport === null);
-}
+  return airports.filter((airport) => airport.connectingAirport === null);
+};
 
-const concatSelf = arr => {
+const concatSelf = (arr) => {
   return [].concat.apply([], arr);
 };
 
 module.exports = {
   concatSelf,
   filterFares,
-  filterByNoStops
+  filterByNoStops,
 };

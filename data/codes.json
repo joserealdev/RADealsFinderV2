@@ -242,12 +242,15 @@
   "VRN": "Verona",
   "TLV": "Tel Aviv",
   "BZR": "Béziers",
-  "PMI": "Palma",
+  "PMI": "Palma de Mallorca",
   "PMO": "Palermo",
   "DUB": "Dublín",
   "SDR": "Santander",
   "KSC": "Kosice",
   "CRA": "Craiova",
   "LRT": "Lorient",
-  "SPU": "Split"
+  "SPU": "Split",
+  "ZAG": "Zagreb",
+  "ARN": "Estocolmo-Arl",
+  "SPC": "La Palma de GC"
 }

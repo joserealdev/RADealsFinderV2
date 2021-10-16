@@ -112,11 +112,7 @@
     {
       "nombre": "Jerez",
       "code": "XRY",
-      "rutas": [
-        "BCN",
-        "STN",
-        "PMI"
-      ]
+      "rutas": ["BCN", "STN", "PMI"]
     },
     {
       "nombre": "Sevilla",
@@ -408,10 +404,7 @@
     {
       "nombre": "Oslo Lufthavn",
       "code": "OSL",
-      "rutas": [
-        "STN",
-        "VNO"
-      ]
+      "rutas": ["STN", "VNO"]
     }
   ]
 }

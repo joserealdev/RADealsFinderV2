@@ -6,7 +6,12 @@ const { checkNow } = require("./src/check");
 const { deleteFlight, showFlights } = require("./src/delete");
 const { addRoute } = require("./src/create");
 const { isUserAllowed, getUser, getLang } = require("./src/helpers");
-const { allowUser, createUserEntry, getUsersWithLang, getUsers } = require("./src/file");
+const {
+  allowUser,
+  createUserEntry,
+  getUsersWithLang,
+  getUsers,
+} = require("./src/file");
 const { chooseAllowUser, selectLanguage } = require("./src/register");
 global.usersLang = getUsersWithLang();
 
@@ -22,19 +27,22 @@ bot.onText(/\/start/, (msg, match) => {
 
 bot.onText(/\/help/, (msg, match) => {
   const chatID = msg.chat.id;
-  bot.sendMessage(chatID, HELP[getLang(chatID)].join(''));
+  bot.sendMessage(chatID, HELP[getLang(chatID)].join(""));
 });
 
 bot.onText(/\/checknow/, (msg, match) => {
   const chatID = msg.chat.id;
   if (isUserAllowed(chatID)) {
     checkNow(chatID)
-      .then(res => {
-        res.forEach(clientData => {
-          sendMessage(clientData.uid, clientData.message || LITERALS.NO_FLIGHTS[getLang(chatID)]);
+      .then((res) => {
+        res.forEach((clientData) => {
+          sendMessage(
+            clientData.uid,
+            clientData.message || LITERALS.NO_FLIGHTS[getLang(chatID)]
+          );
         });
       })
-      .catch(e => {
+      .catch((e) => {
         sendMessage(chatID, e || LITERALS.NO_FLIGHTS[getLang(chatID)]);
       });
   } else {
@@ -43,10 +51,12 @@ bot.onText(/\/checknow/, (msg, match) => {
 });
 
 bot.onText(/\/addroute/, (msg, match) => {
-  const { chat: { id: chatID } } = msg;
+  const {
+    chat: { id: chatID },
+  } = msg;
 
   if (isUserAllowed(chatID)) {
-    addRouteHandler(chatID, 'next=departure');
+    addRouteHandler(chatID, "next=departure");
   } else {
     sendMessage(chatID, LITERALS.NOT_ALLOWED[getLang(chatID)]);
   }
@@ -54,10 +64,8 @@ bot.onText(/\/addroute/, (msg, match) => {
 
 bot.onText(/\/delete/, (msg, match) => {
   const {
-    chat: {
-      id: chatID
-    },
-    message_id
+    chat: { id: chatID },
+    message_id,
   } = msg;
   deleteFlightHandler(chatID, message_id);
 });
@@ -75,12 +83,8 @@ bot.onText(/\/godtext (.*)/, (msg, match) => {
 bot.on("callback_query", (callbackQuery) => {
   const {
     data,
-    from: {
-      id: messageChatId
-    },
-    message: {
-      message_id
-    }
+    from: { id: messageChatId },
+    message: { message_id },
   } = callbackQuery;
   bot.deleteMessage(messageChatId, message_id);
 
@@ -90,7 +94,10 @@ bot.on("callback_query", (callbackQuery) => {
       if (deleteFlight(messageChatId, params.get("index"))) {
         deleteFlightHandler(messageChatId);
       } else {
-        bot.sendMessage(messageChatId, LITERALS.DELETE_ERROR[getLang(messageChatId)])
+        bot.sendMessage(
+          messageChatId,
+          LITERALS.DELETE_ERROR[getLang(messageChatId)]
+        );
       }
       break;
 
@@ -99,33 +106,53 @@ bot.on("callback_query", (callbackQuery) => {
       break;
 
     case ACTIONS.CANCEL:
-      bot.sendMessage(messageChatId, LITERALS.OPERATION_CANCELLED[getLang(messageChatId)]).then(res => {
-        setTimeout(() => {
-          bot.deleteMessage(messageChatId, res.message_id);
-        }, 3000);
-      });
+      bot
+        .sendMessage(
+          messageChatId,
+          LITERALS.OPERATION_CANCELLED[getLang(messageChatId)]
+        )
+        .then((res) => {
+          setTimeout(() => {
+            bot.deleteMessage(messageChatId, res.message_id);
+          }, 3000);
+        });
       break;
 
     case ACTIONS.LANGUAGE:
-      if (!getUser(messageChatId) && createUserEntry(callbackQuery.from, params.get("lang"))) {
-        bot.sendMessage(messageChatId, LITERALS.ACCOUNT_CREATED[getLang(messageChatId)]);
+      if (
+        !getUser(messageChatId) &&
+        createUserEntry(callbackQuery.from, params.get("lang"))
+      ) {
+        bot.sendMessage(
+          messageChatId,
+          LITERALS.ACCOUNT_CREATED[getLang(messageChatId)]
+        );
         if (!callbackQuery.from.is_bot) {
           const res = chooseAllowUser(callbackQuery.from);
           bot.sendMessage(myid, res.msg, res.opts);
         }
       } else {
-        bot.sendMessage(messageChatId, LITERALS.ACCOUNT_FAIL[getLang(messageChatId)]);
+        bot.sendMessage(
+          messageChatId,
+          LITERALS.ACCOUNT_FAIL[getLang(messageChatId)]
+        );
       }
       break;
 
     case ACTIONS.ALLOW_USER:
-      if (params.get("allow") === "yes" && allowUser(parseInt(params.get("uid")))) {
-        bot.sendMessage(parseInt(params.get("uid")), LITERALS.ACCOUNT_GRANTED[getLang(parseInt(params.get("uid")))]);
+      if (
+        params.get("allow") === "yes" &&
+        allowUser(parseInt(params.get("uid")))
+      ) {
+        bot.sendMessage(
+          parseInt(params.get("uid")),
+          LITERALS.ACCOUNT_GRANTED[getLang(parseInt(params.get("uid")))]
+        );
       }
       break;
 
     default:
-      bot.sendMessage(messageChatId, "Fallo").then(res => {
+      bot.sendMessage(messageChatId, "Fallo").then((res) => {
         setTimeout(() => {
           bot.deleteMessage(messageChatId, res.message_id);
         }, 3000);
@@ -135,30 +162,38 @@ bot.on("callback_query", (callbackQuery) => {
 });
 
 cron.schedule("0 7,11,15,18,21 * * *", () => {
-  checkNow().then(res => {
-    res.forEach(clientData => {
-      if (clientData && clientData.message && clientData.message.length > 0) {
-        sendMessage(clientData.uid, clientData.message);
-      }
+  checkNow()
+    .then((res) => {
+      res.forEach((clientData) => {
+        if (clientData && clientData.message && clientData.message.length > 0) {
+          sendMessage(clientData.uid, clientData.message);
+        }
+      });
+    })
+    .catch((e) => {
+      sendMessage(myid, `Error CRON. ${e}`);
     });
-  }).catch((e) => {
-    sendMessage(myid, `Error CRON. ${e}`);
-  });
 });
 
 const sendMessage = (uid, text) => {
-  bot.sendMessage(uid, text, {
-    parse_mode: "Markdown",
-    disable_web_page_preview: true
-  }).catch((e) => {
-    bot.sendMessage(myid, `ERROR: ${e}`);
-  });
+  bot
+    .sendMessage(uid, text, {
+      parse_mode: "Markdown",
+      disable_web_page_preview: true,
+    })
+    .catch((e) => {
+      bot.sendMessage(myid, `ERROR: ${e}`);
+    });
 };
 
 const deleteFlightHandler = (chatID, messageId) => {
   const res = showFlights(chatID, messageId);
-  if (typeof res === 'object') {
-    bot.sendMessage(chatID, LITERALS.FLIGHT_TO_DELETE[getLang(chatID)], res);
+  if (typeof res === "object") {
+    bot
+      .sendMessage(chatID, LITERALS.FLIGHT_TO_DELETE[getLang(chatID)], res)
+      .catch((e) => {
+        bot.sendMessage(myid, `ERROR: ${e}`);
+      });
   } else {
     sendMessage(chatID, res);
   }
@@ -166,8 +201,12 @@ const deleteFlightHandler = (chatID, messageId) => {
 
 const addRouteHandler = (chatID, params) => {
   const res = addRoute(chatID, params);
-  if (typeof res === 'object') {
-    bot.sendMessage(chatID, res.msg, res.opts);
+  if (typeof res === "object") {
+    Promise.resolve(res).then((value) => {
+      bot.sendMessage(chatID, value.msg, value.opts).catch((e) => {
+        bot.sendMessage(myid, `ERROR: ${e}`);
+      });
+    });
   } else {
     sendMessage(chatID, res);
   }

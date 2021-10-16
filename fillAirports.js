@@ -1,7 +1,6 @@
-const { getArrivalAirports } = require('./src/request');
+const { getArrivalAirports } = require("./src/request");
 
-getArrivalAirports('OSL').then(res => {
-    const parsed = JSON.parse(res);
-    const airports = parsed.map(airport => airport.arrivalAirport.code);
-    console.log(airports)
-})
+getArrivalAirports("XRY").then((res) => {
+  const airports = res.map((airport) => airport.arrivalAirport.code);
+  console.log(airports);
+});
