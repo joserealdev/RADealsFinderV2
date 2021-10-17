@@ -104,7 +104,6 @@ const searchWeekend = (flight) => {
       resolve(filteredFares);
     });
   } else {
-    console.log("=== CHECK");
     return new Promise((resolve, reject) => {
       const promises = [];
       const date = get(flight, "dateInterval[0]");

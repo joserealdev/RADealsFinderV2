@@ -19,7 +19,6 @@ const checkFlight = ({ from, destination, dateInterval, duration }) => {
       inboundDepartureDateFrom: `${year}-01-01`,
       inboundDepartureDateTo: `${year + 1}-12-31`,
       language: "es",
-      limit: "32",
       market: "es-es",
       offset: "0",
       outboundDepartureDateFrom: dateInterval[0],
