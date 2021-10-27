@@ -5,7 +5,6 @@ const { ACTIONS, LITERALS } = require("../data/properties.json");
 const airportCodes = require("../data/codes.json");
 const {
   departureAirports,
-  destinationAirports,
 } = require("../data/airports.json");
 const { getArrivalAirports } = require("./request");
 
