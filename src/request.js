@@ -2,7 +2,13 @@ const request = require("request");
 const { getFakeUserAgent } = require("./helpers");
 const { API } = require("../data/properties.json");
 
-const checkFlight = ({ from, destination, dateInterval, duration }) => {
+const checkFlight = ({
+  from,
+  destination,
+  dateInterval,
+  duration,
+  isWeekend = false,
+}) => {
   return new Promise((resolve, reject) => {
     const year = new Date().getFullYear();
     let parameters = {};
@@ -23,8 +29,34 @@ const checkFlight = ({ from, destination, dateInterval, duration }) => {
       offset: "0",
       outboundDepartureDateFrom: dateInterval[0],
       outboundDepartureDateTo: dateInterval[1],
-      priceValueTo: "200",
+      priceValueTo: "500",
     };
+
+    if (isWeekend) {
+      parameters = destination
+        ? {
+            arrivalAirportIataCode: destination,
+          }
+        : {};
+      parameters = {
+        ...parameters,
+        departureAirportIataCode: from,
+        outboundDepartureDateFrom: dateInterval[0],
+        market: "es-es",
+        language: "es",
+        adultPaxCount: 1,
+        outboundDepartureDateTo: dateInterval[0],
+        inboundDepartureDateFrom: dateInterval[1],
+        inboundDepartureDateTo: dateInterval[1],
+        outboundDepartureDaysOfWeek: "SATURDAY",
+        durationFrom: 1,
+        durationTo: 1,
+        outboundDepartureTimeFrom: "00:00",
+        outboundDepartureTimeTo: "23:59",
+        inboundDepartureTimeFrom: "00:00",
+        inboundDepartureTimeTo: "23:59",
+      };
+    }
 
     const options = {
       headers: {

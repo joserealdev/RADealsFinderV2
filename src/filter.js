@@ -1,6 +1,6 @@
 const get = require("lodash.get");
 
-const filterFares = (userdata, budget, countries) => {
+const filterFares = (userdata, countries) => {
   const data = userdata.map((element) => {
     const faresel = get(JSON.parse(element), "fares", []);
     const filter = faresel.map((fare) => {
@@ -15,6 +15,7 @@ const filterFares = (userdata, budget, countries) => {
         get(fare, "inbound.departureDate", "").split("T")[0],
       ];
       const price = get(fare, "summary.price.value", "");
+      const currency = get(fare, "summary.price.currencySymbol", "");
       const country = get(fare, "outbound.arrivalAirport.countryName", "");
       return {
         dpAirport,
@@ -26,6 +27,7 @@ const filterFares = (userdata, budget, countries) => {
         dates,
         price,
         country,
+        currency,
       };
     });
     return filter;
@@ -34,15 +36,22 @@ const filterFares = (userdata, budget, countries) => {
   const filteredCountry = countries
     ? filterByCountry(concated, countries)
     : concated;
-  const filteredPrice = filterByPrice(filteredCountry, budget);
-  return getUnicLowest(filteredPrice);
+  return getUnicLowest(filteredCountry);
 };
 
 const getUnicLowest = (data) => {
   const unique = [...new Set(data.map((item) => item.arrAirport))];
   const hj = unique.map((val) => {
-    const { departure, dpCode, dpHour, arrCode, arrHour, precio, fechas } =
-      lowestFare(val, data);
+    const {
+      departure,
+      dpCode,
+      dpHour,
+      arrCode,
+      arrHour,
+      precio,
+      fechas,
+      currency,
+    } = lowestFare(val, data);
     return {
       salida: departure,
       salidaCode: dpCode,
@@ -52,6 +61,7 @@ const getUnicLowest = (data) => {
       horaDestino: arrHour,
       precio,
       fechas,
+      currency,
     };
   });
   return hj.sort((a, b) =>
@@ -67,6 +77,7 @@ const lowestFare = (llave, data) => {
   let dpHour = "";
   let arrAirportCode = "";
   let arrHour = "";
+  let currency = "€";
   data.forEach((el) => {
     if (el.arrAirport == llave && el.price < min) {
       min = el.price;
@@ -76,6 +87,7 @@ const lowestFare = (llave, data) => {
       dpHour = el.dpHour;
       arrAirportCode = el.arrAirportCode;
       arrHour = el.arrHour;
+      currency = el.currency;
     }
   });
   return {
@@ -86,6 +98,7 @@ const lowestFare = (llave, data) => {
     arrHour: arrHour,
     precio: min,
     fechas: dates,
+    currency,
   };
 };
 

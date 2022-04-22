@@ -46,7 +46,7 @@ const formatFlights = (flights = [], uid) => {
       `\u{1F6EC} *${flight.destino}* ${formatDateWithSlash(
         flight.fechas[1]
       )} \u{23F0} ${flight.horaDestino}\n` +
-      `\u{1F4B0} ${flight.precio}€\n` +
+      `\u{1F4B0} ${flight.precio} ${flight.currency}\n` +
       `[${LITERALS.LINK[getLang(uid)]}](${LINK}/${flight.salidaCode}/${
         flight.destinoCode
       }/${formatDate(flight.fechas[0])}/${formatDate(
@@ -161,6 +161,7 @@ module.exports = {
   formatFlights,
   getFakeUserAgent,
   getFollowingSaturdays,
+  formatDate,
   isUserAllowed,
   getUser,
   getLang,

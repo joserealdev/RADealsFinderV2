@@ -6,6 +6,7 @@ const {
   getFollowingSaturdays,
   getLang,
   isUserAllowed,
+  formatDate,
 } = require("./helpers.js");
 const { concatSelf, filterFares } = require("./filter.js");
 const { NUMBER_OF_WEEKENDS, LITERALS } = require("../data/properties.json");
@@ -76,11 +77,7 @@ const searchNormal = (flight) => {
     promises.push(checkFlight(params));
     Promise.all(promises)
       .then((values) => {
-        const filteredFares = filterFares(
-          values,
-          flight.budget,
-          flight.notDestinations
-        );
+        const filteredFares = filterFares(values, flight.notDestinations);
         resolve(filteredFares);
       })
       .catch((e) => {
@@ -98,7 +95,6 @@ const searchWeekend = (flight) => {
     return new Promise((resolve, reject) => {
       const filteredFares = filterFares(
         weekendFares[flight.from].data,
-        flight.budget,
         flight.notDestinations
       );
       resolve(filteredFares);
@@ -115,10 +111,14 @@ const searchWeekend = (flight) => {
             destination: flight.destination,
           };
         }
+
+        const nextDay = new Date(date);
+        nextDay.setDate(nextDay.getDate() + 1);
+
         params = {
           ...params,
           from: flight.from,
-          dateInterval: [date, date],
+          dateInterval: [date, formatDate(nextDay)],
           duration: [01],
         };
         promises.push(checkFlight(params));
@@ -129,11 +129,7 @@ const searchWeekend = (flight) => {
             data: values,
             lastCheck: now.getTime(),
           };
-          const filteredFares = filterFares(
-            values,
-            flight.budget,
-            flight.notDestinations
-          );
+          const filteredFares = filterFares(values, flight.notDestinations);
           resolve(filteredFares);
         })
         .catch((e) => {

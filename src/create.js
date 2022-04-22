@@ -3,9 +3,7 @@ const { writeFlight } = require("./file");
 const { getLang } = require("./helpers.js");
 const { ACTIONS, LITERALS } = require("../data/properties.json");
 const airportCodes = require("../data/codes.json");
-const {
-  departureAirports,
-} = require("../data/airports.json");
+const { departureAirports } = require("../data/airports.json");
 const { getArrivalAirports } = require("./request");
 
 const udata = {};
@@ -333,17 +331,17 @@ const chooseDuration = (uid) => {
   const fRow = [3, 4, 5, 6, 7].map((day) => {
     return {
       text: day,
-      callback_data: `action=${ACTIONS.CREATE}&duration=${day}&next=budget`,
+      callback_data: `action=${ACTIONS.CREATE}&duration=${day}&next=insert`,
     };
   });
   const sRow = [
     {
       text: "3 a 5",
-      callback_data: `action=${ACTIONS.CREATE}&duration=3-5&next=budget`,
+      callback_data: `action=${ACTIONS.CREATE}&duration=3-5&next=insert`,
     },
     {
       text: "4 a 7",
-      callback_data: `action=${ACTIONS.CREATE}&duration=4-7&next=budget`,
+      callback_data: `action=${ACTIONS.CREATE}&duration=4-7&next=insert`,
     },
   ];
   const buttons = [fRow, sRow, [getCancelButton(uid)]];

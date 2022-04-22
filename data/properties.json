@@ -1,5 +1,6 @@
 {
-  "API": "https://www.ryanair.com/api/farfnd/3/roundTripFares",
+  "API_V3": "https://www.ryanair.com/api/farfnd/3/roundTripFares",
+  "API": "https://www.ryanair.com/api/farfnd/v4/roundTripFares",
   "LINK": "https://www.ryanair.com/es/es/booking/home",
   "NUMBER_OF_WEEKENDS": 16,
   "ACTIONS": {
